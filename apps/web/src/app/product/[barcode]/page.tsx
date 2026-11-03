@@ -10,23 +10,44 @@ import {
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
 async function getProductData(barcode: string) {
-  // 1. First try backend API if running
-  try {
-    const res = await fetch(`${API}/api/barcode/scan`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ barcode }),
-      next: { revalidate: 3600 },
-    });
-    if (res.ok) {
-      const json = await res.json();
-      if (json.success) return json.data;
-    }
-  } catch {}
+  const cleaned = barcode?.trim();
+  if (!cleaned) return null;
 
-  // 2. Direct core catalog & Open Food Facts fallback (guarantees zero build/server dependency)
+  // 1. Instant hit from Curated Popular Catalog (0ms latency, zero network)
   try {
-    const product = findInCatalog(barcode) ?? (await fetchFromOpenFoodFacts(barcode));
+    const catalogHit = findInCatalog(cleaned);
+    if (catalogHit) {
+      const nutrientScores = scoreNutrition(catalogHit.nutritionPer100g);
+      const overallScore = computeOverallScore(catalogHit.nutritionPer100g);
+      return {
+        product: catalogHit,
+        nutrientScores,
+        overallScore,
+      };
+    }
+  } catch (err) {
+    console.error('Error checking catalog:', err);
+  }
+
+  // 2. Try backend API if URL is configured or in local development
+  if (process.env.NEXT_PUBLIC_API_URL || process.env.NODE_ENV === 'development') {
+    try {
+      const res = await fetch(`${API}/api/barcode/scan`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ barcode: cleaned }),
+        next: { revalidate: 3600 },
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) return json.data;
+      }
+    } catch {}
+  }
+
+  // 3. Fallback to Open Food Facts API directly
+  try {
+    const product = await fetchFromOpenFoodFacts(cleaned);
     if (!product) return null;
 
     const nutrientScores = scoreNutrition(product.nutritionPer100g);
@@ -37,7 +58,8 @@ async function getProductData(barcode: string) {
       nutrientScores,
       overallScore,
     };
-  } catch {
+  } catch (err) {
+    console.error('Error fetching OpenFoodFacts:', err);
     return null;
   }
 }
