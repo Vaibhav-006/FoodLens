@@ -11,16 +11,17 @@
   },
   "dependencies": {
     "@foodlens/core": "*",
+    "@supabase/supabase-js": "^2.118.0",
+    "@zxing/browser": "^0.1.5",
+    "@zxing/library": "^0.21.3",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
     "next": "15.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^2.13.3",
-    "zustand": "^5.0.1",
-    "@zxing/browser": "^0.1.5",
-    "@zxing/library": "^0.21.3",
-    "lucide-react": "^0.468.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^2.5.5",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
@@ -32,4 +33,3 @@
     "typescript": "^5.7.2"
   }
 }
-
