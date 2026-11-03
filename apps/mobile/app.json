@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "FoodLens",
+    "slug": "foodlens",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#16a34a"
+    },
+    "scheme": "foodlens",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.foodlens.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "FoodLens needs camera access to scan barcodes on food packages.",
+        "NSPhotoLibraryUsageDescription": "FoodLens can scan barcodes from your photo library."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#16a34a"
+      },
+      "package": "com.foodlens.app",
+      "permissions": ["CAMERA"]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "FoodLens needs camera access to scan barcodes."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
+

@@ -1,0 +1,57 @@
+# ─── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ─── Build Outputs & Caches ──────────────────────────────────────────────────
+.next/
+out/
+build/
+dist/
+.turbo/
+.cache/
+*.tsbuildinfo
+
+# ─── Environment Variables & Secrets (NEVER COMMIT) ──────────────────────────
+.env
+.env*.local
+.env.local
+.env.development
+.env.test
+.env.production
+backend/.env
+apps/web/.env
+apps/web/.env.local
+
+# Preserve example config templates
+!.env.example
+!*.env.example
+!.env.local.example
+!backend/.env.example
+!apps/web/.env.local.example
+
+# ─── Logs & Debugging ────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── OS Specific ─────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── IDE & Editors ───────────────────────────────────────────────────────────
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
