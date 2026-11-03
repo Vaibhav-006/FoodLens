@@ -10,6 +10,13 @@ const TRAFFIC_CLASSES = {
 
 const TRAFFIC_EMOJI = { green: '🟢', amber: '🟡', red: '🔴' };
 
+function formatNutrient(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(Number(val))) return '0';
+  const num = Number(val);
+  if (num >= 100) return Math.round(num).toString();
+  return Number(num.toFixed(1)).toString();
+}
+
 export function NutritionPanel({ scores }: { scores: NutrientScore[] }) {
   const highlighted = ['calories', 'totalFat', 'saturatedFat', 'transFat', 'totalSugar', 'sodium'];
   const top = scores.filter((s) => highlighted.includes(s.nutrient));
@@ -28,7 +35,7 @@ export function NutritionPanel({ scores }: { scores: NutrientScore[] }) {
           >
             <div className="text-xs font-medium opacity-80">{s.label}</div>
             <div className="text-lg font-bold mt-0.5">
-              {s.valuePer100g !== null ? `${s.valuePer100g}` : '—'}
+              {s.valuePer100g !== null ? formatNutrient(s.valuePer100g) : '—'}
               <span className="text-xs font-normal ml-0.5">{s.unit}</span>
             </div>
             <div className="text-xs mt-0.5">{TRAFFIC_EMOJI[s.trafficLight]}</div>
@@ -46,7 +53,7 @@ export function NutritionPanel({ scores }: { scores: NutrientScore[] }) {
                 <span className="text-xs text-gray-400">{s.dailyValuePercent}% DV</span>
               )}
               <span className={`text-sm font-semibold px-2.5 py-0.5 rounded-lg ${TRAFFIC_CLASSES[s.trafficLight]}`}>
-                {s.valuePer100g !== null ? `${s.valuePer100g} ${s.unit}` : 'N/A'}
+                {s.valuePer100g !== null ? `${formatNutrient(s.valuePer100g)} ${s.unit}` : 'N/A'}
               </span>
             </div>
           </div>

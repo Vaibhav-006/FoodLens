@@ -4,6 +4,11 @@ const OFF_BASE_V2 = 'https://world.openfoodfacts.org/api/v2/product';
 const OFF_BASE_V0 = 'https://world.openfoodfacts.org/api/v0/product';
 const OFF_SEARCH = 'https://world.openfoodfacts.org/cgi/search.pl';
 
+const round1 = (val: any) =>
+  val !== null && val !== undefined && !isNaN(Number(val))
+    ? Math.round(Number(val) * 10) / 10
+    : null;
+
 function mapOFFProduct(p: any, fallbackBarcode: string): Product {
   const n = p.nutriments ?? {};
   const isVeg = p.ingredients_analysis_tags?.includes('en:non-vegetarian')
@@ -25,16 +30,16 @@ function mapOFFProduct(p: any, fallbackBarcode: string): Product {
     ingredientsRaw: p.ingredients_text || p.ingredients_text_en || null,
     ingredients: parseIngredients(p.ingredients_text || p.ingredients_text_en || ''),
     nutritionPer100g: {
-      calories:     n['energy-kcal_100g'] ?? (n['energy_100g'] ? Math.round(n['energy_100g'] / 4.184) : null),
-      totalFat:     n['fat_100g'] ?? null,
-      saturatedFat: n['saturated-fat_100g'] ?? null,
-      transFat:     n['trans-fat_100g'] ?? null,
-      totalCarbs:   n['carbohydrates_100g'] ?? null,
-      dietaryFibre: n['fiber_100g'] ?? null,
-      totalSugar:   n['sugars_100g'] ?? null,
-      addedSugar:   n['added-sugars_100g'] ?? null,
-      protein:      n['proteins_100g'] ?? null,
-      sodium:       n['sodium_100g'] !== undefined ? Math.round(n['sodium_100g'] * 1000) : (n['salt_100g'] !== undefined ? Math.round(n['salt_100g'] * 400) : null),
+      calories:     n['energy-kcal_100g'] ? Math.round(Number(n['energy-kcal_100g'])) : (n['energy_100g'] ? Math.round(Number(n['energy_100g']) / 4.184) : null),
+      totalFat:     round1(n['fat_100g']),
+      saturatedFat: round1(n['saturated-fat_100g']),
+      transFat:     round1(n['trans-fat_100g']),
+      totalCarbs:   round1(n['carbohydrates_100g']),
+      dietaryFibre: round1(n['fiber_100g']),
+      totalSugar:   round1(n['sugars_100g']),
+      addedSugar:   round1(n['added-sugars_100g']),
+      protein:      round1(n['proteins_100g']),
+      sodium:       n['sodium_100g'] !== undefined ? Math.round(Number(n['sodium_100g']) * 1000) : (n['salt_100g'] !== undefined ? Math.round(Number(n['salt_100g']) * 400) : null),
     },
   };
 }

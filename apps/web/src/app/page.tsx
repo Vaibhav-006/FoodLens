@@ -381,21 +381,31 @@ export default function HomePage() {
       </section>
 
       {/* ─── FEATURE PILLARS ────────────────────────────── */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pb-4">
         {FEATURES.map((f, i) => (
           <div
             key={i}
-            className="rounded-2xl p-5 transition-all"
+            className="rounded-2xl p-5 transition-all glass-card border border-white/10 hover:border-emerald-500/30 hover:bg-white/[0.04] flex flex-col justify-between group"
             style={{
-              background: `linear-gradient(135deg, ${f.color.split(' ')[0].replace('from-', '').replace('/20', '').replace(/^/, 'rgba(').replace('emerald-500', '34,197,94').replace('sky-500', '56,189,248').replace('violet-500', '167,139,250').replace('amber-500', '251,191,36').replace(/^rgba\(/, 'rgba(')}0.12) 0%, rgba(0,0,0,0) 100%)`,
-              border: `1px solid ${f.accent}20`,
+              boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
             }}
           >
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ background: `${f.accent}18`, color: f.accent }}>
-              {f.icon}
+            <div>
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-3.5 border transition-transform group-hover:scale-105"
+                style={{
+                  background: `${f.accent}20`,
+                  color: f.accent,
+                  borderColor: `${f.accent}40`,
+                }}
+              >
+                {f.icon}
+              </div>
+              <h4 className="text-sm font-bold text-white tracking-tight">{f.title}</h4>
+              <p className="text-xs mt-2 text-zinc-300 font-medium leading-relaxed">
+                {f.desc}
+              </p>
             </div>
-            <h4 className="text-xs font-bold text-white">{f.title}</h4>
-            <p className="text-[11px] mt-1.5 leading-relaxed" style={{ color: '#4b7a5e' }}>{f.desc}</p>
           </div>
         ))}
       </section>

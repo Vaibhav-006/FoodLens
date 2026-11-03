@@ -35,6 +35,13 @@ const NUTRIENT_LABELS: Record<string, { label: string; unit: string; limit: bool
   dietaryFibre: { label: 'Dietary Fibre', unit: 'g', limit: false },
 };
 
+function formatNutrient(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(Number(val))) return '0';
+  const num = Number(val);
+  if (num >= 100) return Math.round(num).toString();
+  return Number(num.toFixed(1)).toString();
+}
+
 export default function ComparePage() {
   const [barcodes, setBarcodes] = useState(['8901491100519', '8901491001021']);
   const [result, setResult] = useState<any | null>(null);
@@ -328,7 +335,7 @@ export default function ComparePage() {
                               <span
                                 className={`inline-block px-2.5 py-1 rounded-xl text-xs font-bold border ${badgeStyle}`}
                               >
-                                {val} {meta.unit}
+                                {formatNutrient(val)} {meta.unit}
                               </span>
                             ) : (
                               <span className="text-[#2d5236] font-mono">—</span>

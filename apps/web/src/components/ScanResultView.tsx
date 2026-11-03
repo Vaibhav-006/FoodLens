@@ -15,6 +15,13 @@ interface ScanResultViewProps {
   overallScore: number;
 }
 
+function formatNutrient(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(Number(val))) return '0';
+  const num = Number(val);
+  if (num >= 100) return Math.round(num).toString();
+  return Number(num.toFixed(1)).toString();
+}
+
 const HEALTHIER_ALTERNATIVES = [
   {
     name: 'Roasted Makhana (Himalayan Pink Salt)',
@@ -231,13 +238,22 @@ export function ScanResultView({ product, nutrientScores, overallScore }: ScanRe
               {/* Macro Trio */}
               <div className="grid grid-cols-3 gap-2 pt-2" style={{ borderTop: '1px solid rgba(34,197,94,0.1)' }}>
                 {[
-                  { label: 'Calories', val: `${product.nutritionPer100g.calories ?? '–'} kcal`, icon: <Flame className="w-3 h-3" /> },
-                  { label: 'Protein', val: `${product.nutritionPer100g.protein ?? '–'}g`, icon: <Zap className="w-3 h-3" /> },
-                  { label: 'Total Fat', val: `${product.nutritionPer100g.totalFat ?? '–'}g`, icon: null },
+                  {
+                    label: 'Calories',
+                    val: product.nutritionPer100g.calories != null ? `${formatNutrient(product.nutritionPer100g.calories)} kcal` : '–',
+                  },
+                  {
+                    label: 'Protein',
+                    val: product.nutritionPer100g.protein != null ? `${formatNutrient(product.nutritionPer100g.protein)}g` : '–',
+                  },
+                  {
+                    label: 'Total Fat',
+                    val: product.nutritionPer100g.totalFat != null ? `${formatNutrient(product.nutritionPer100g.totalFat)}g` : '–',
+                  },
                 ].map((m, i) => (
-                  <div key={i} className="rounded-xl p-2.5 text-center" style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.08)' }}>
-                    <span className="text-[9px] font-bold uppercase tracking-wider block" style={{ color: '#4b7a5e' }}>{m.label}</span>
-                    <p className="text-xs font-extrabold text-white mt-0.5">{m.val}</p>
+                  <div key={i} className="rounded-xl p-2.5 text-center overflow-hidden" style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.08)' }}>
+                    <span className="text-[9px] font-bold uppercase tracking-wider block truncate" style={{ color: '#4b7a5e' }}>{m.label}</span>
+                    <p className="text-xs font-extrabold text-white mt-0.5 truncate">{m.val}</p>
                   </div>
                 ))}
               </div>
@@ -373,7 +389,9 @@ export function ScanResultView({ product, nutrientScores, overallScore }: ScanRe
                           <div className="flex items-center gap-2">
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={badgeStyle}>{badgeText}</span>
                             <span className="text-[11px] font-medium" style={{ color: '#4b7a5e' }}>{pct}% DV</span>
-                            <span className="font-bold text-white min-w-12 text-right">{s.valuePer100g !== null ? `${s.valuePer100g} ${s.unit}` : `0 ${s.unit}`}</span>
+                            <span className="font-bold text-white min-w-12 text-right">
+                              {s.valuePer100g !== null ? `${formatNutrient(s.valuePer100g)} ${s.unit}` : `0 ${s.unit}`}
+                            </span>
                           </div>
                         </div>
                         <div className="h-2 rounded-full w-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
@@ -421,7 +439,9 @@ export function ScanResultView({ product, nutrientScores, overallScore }: ScanRe
                           <div className="flex items-center gap-2">
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={badgeStyle}>{badgeText}</span>
                             <span className="text-[11px] font-medium" style={{ color: '#4b7a5e' }}>{pct}% of Target</span>
-                            <span className="font-bold text-white min-w-12 text-right">{val} {s.unit}</span>
+                            <span className="font-bold text-white min-w-12 text-right">
+                              {formatNutrient(val)} {s.unit}
+                            </span>
                           </div>
                         </div>
                         <div className="h-2 rounded-full w-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
