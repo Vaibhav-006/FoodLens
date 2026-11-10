@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Scale, Trophy, Plus, ArrowRight, Zap, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = (process.env.NEXT_PUBLIC_API_URL || 'https://foodlens-qg92.onrender.com').replace(/\/+$/, '');
 
 const PRESET_COMPARISONS = [
   {

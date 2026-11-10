@@ -8,7 +8,7 @@ import {
   sanitizeNutrition,
 } from '@foodlens/core';
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = (process.env.NEXT_PUBLIC_API_URL || 'https://foodlens-qg92.onrender.com').replace(/\/+$/, '');
 
 async function getProductData(barcode: string) {
   const cleaned = barcode?.trim();

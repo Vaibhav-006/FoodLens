@@ -21,11 +21,19 @@ const PORT = process.env.PORT ?? 4000;
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(helmet());
 app.use(cors({
-  origin: [
-    'http://localhost:3000',  // Next.js dev
-    'https://foodlens.vercel.app',
-    process.env.FRONTEND_URL ?? '',
-  ].filter(Boolean),
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    const allowed =
+      origin === 'http://localhost:3000' ||
+      origin === 'https://foodlens.vercel.app' ||
+      origin.endsWith('.vercel.app') ||
+      (Boolean(process.env.FRONTEND_URL) && origin === process.env.FRONTEND_URL);
+    if (allowed) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true,
 }));
 app.use(express.json());

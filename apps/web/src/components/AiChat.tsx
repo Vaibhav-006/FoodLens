@@ -18,7 +18,7 @@ const QUICK_QUESTIONS = [
   'Yeh product Hindi mein samjhao',
 ];
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = (process.env.NEXT_PUBLIC_API_URL || 'https://foodlens-qg92.onrender.com').replace(/\/+$/, '');
 
 /**
  * Formats AI responses into clean typography:
@@ -135,7 +135,7 @@ export function AiChat({ product, barcode: barcodeProp, productName: productName
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: '⚠️ Failed to connect to AI server. Make sure the backend is running on port 4000.' },
+        { role: 'assistant', content: '⚠️ Failed to connect to FoodLens AI server. Please check your connection or try again in a moment.' },
       ]);
     } finally {
       setLoading(false);
