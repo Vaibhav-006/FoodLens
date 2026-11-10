@@ -1,4 +1,4 @@
-import { fetchFromOpenFoodFacts, searchOpenFoodFactsByName } from '@foodlens/core';
+import { fetchFromOpenFoodFacts, searchOpenFoodFactsByName, sanitizeNutrition } from '@foodlens/core';
 import type { Product } from '@foodlens/core';
 import { db } from '../db/client';
 import { cache, CACHE_TTL } from '../lib/cache';
@@ -51,6 +51,7 @@ export async function resolveBarcode(barcode: string, searchHint?: string): Prom
   if (cached) {
     const product = JSON.parse(cached) as Product;
     product.source = 'cache';
+    product.nutritionPer100g = sanitizeNutrition(product.nutritionPer100g);
     return product;
   }
 

@@ -143,39 +143,39 @@ export function AiChat({ product, barcode: barcodeProp, productName: productName
   };
 
   return (
-    <div className="flex flex-col h-full min-h-[520px] p-5 space-y-4">
+    <div className="flex flex-col h-full min-h-[460px] sm:min-h-[520px] p-3.5 sm:p-5 space-y-3 sm:space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between pb-3" style={{ borderBottom: '1px solid rgba(34,197,94,0.12)' }}>
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
           <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', boxShadow: '0 0 16px rgba(34,197,94,0.3)' }}
           >
             <Sparkles className="w-4 h-4 text-white" />
           </div>
-          <div>
-            <h3 className="text-sm font-bold text-white leading-none">AI Food Assistant</h3>
-            <p className="text-[11px] mt-1" style={{ color: '#4b7a5e' }}>
+          <div className="min-w-0">
+            <h3 className="text-xs sm:text-sm font-bold text-white leading-none">AI Food Assistant</h3>
+            <p className="text-[10px] sm:text-[11px] mt-1 truncate" style={{ color: '#4b7a5e' }}>
               Ask anything about <span className="font-semibold" style={{ color: '#86efac' }}>{productName}</span>
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
+        <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
           <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
           <span className="text-[10px] font-bold" style={{ color: '#4ade80' }}>Online</span>
         </div>
       </div>
 
-      {/* Quick Questions */}
+      {/* Quick Questions (Swipeable row on mobile) */}
       {messages.length === 0 && (
         <div className="space-y-2">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider" style={{ color: '#4b7a5e' }}>Quick Questions</span>
-          <div className="flex flex-wrap gap-1.5">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider block" style={{ color: '#4b7a5e' }}>Quick Questions</span>
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap pb-1">
             {QUICK_QUESTIONS.map((q) => (
               <button
                 key={q}
                 onClick={() => sendMessage(q)}
-                className="text-xs px-3 py-1.5 rounded-xl transition-all text-left font-medium active:scale-95"
+                className="text-xs px-3 py-1.5 rounded-xl whitespace-nowrap sm:whitespace-normal transition-all text-left font-medium active:scale-95 flex-shrink-0"
                 style={{ background: 'rgba(34,197,94,0.07)', color: '#86efac', border: '1px solid rgba(34,197,94,0.15)' }}
               >
                 {q}
@@ -199,7 +199,7 @@ export function AiChat({ product, barcode: barcodeProp, productName: productName
             )}
 
             <div
-              className="max-w-[88%] rounded-2xl px-4 py-3"
+              className="max-w-[88%] rounded-2xl px-3.5 sm:px-4 py-2.5 sm:py-3"
               style={
                 m.role === 'user'
                   ? { background: 'linear-gradient(135deg, #22c55e, #16a34a)', borderTopRightRadius: 4 }
@@ -241,7 +241,7 @@ export function AiChat({ product, barcode: barcodeProp, productName: productName
         <div ref={bottomRef} />
       </div>
 
-      {/* Input */}
+      {/* Input Form with iOS auto-zoom prevention */}
       <form
         onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}
         className="flex items-center gap-2 pt-3"
@@ -252,7 +252,7 @@ export function AiChat({ product, barcode: barcodeProp, productName: productName
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about protein, weight loss, or in Hindi..."
-          className="flex-1 rounded-xl px-3.5 py-2.5 text-xs placeholder-[#2d5236] focus:outline-none transition-all"
+          className="flex-1 rounded-xl px-3.5 py-2.5 text-base sm:text-xs placeholder-[#2d5236] focus:outline-none transition-all"
           style={{
             background: 'rgba(34,197,94,0.05)',
             border: '1px solid rgba(34,197,94,0.15)',
@@ -263,10 +263,10 @@ export function AiChat({ product, barcode: barcodeProp, productName: productName
         <button
           type="submit"
           disabled={!input.trim() || loading}
-          className="btn-primary disabled:opacity-40 text-xs px-4 py-2.5 flex-shrink-0"
+          className="btn-primary disabled:opacity-40 text-xs px-3 sm:px-4 py-2.5 flex-shrink-0 flex items-center justify-center gap-1.5 active:scale-95"
         >
           <Send className="w-3.5 h-3.5" />
-          Send
+          <span className="hidden sm:inline">Send</span>
         </button>
       </form>
     </div>

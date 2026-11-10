@@ -562,6 +562,34 @@ export const POPULAR_SNACKS_CATALOG: Product[] = [
       sodium: 320,
     },
   },
+  // ─── 16. Quaker Rolled Oats 1kg ───────────────────────────────────────────
+  {
+    id: 'prod-quaker-oats-1kg',
+    barcode: '5000108022152',
+    name: 'Quaker Wholegrain Rolled Porridge Oats 1kg',
+    brand: 'Quaker (PepsiCo)',
+    imageUrl: 'https://images.openfoodfacts.org/images/products/500/010/802/2152/front_en.112.400.jpg',
+    servingSizeG: 40,
+    nutriscore: 'a',
+    source: 'cache',
+    isVegetarian: true,
+    ingredientsRaw: '100% Wholegrain Rolled Oats.',
+    ingredients: [
+      { name: '100% Wholegrain Rolled Oats', originalText: '100% Wholegrain Rolled Oats' },
+    ],
+    nutritionPer100g: {
+      calories: 375,
+      totalFat: 8.0,
+      saturatedFat: 1.5,
+      transFat: 0,
+      totalCarbs: 60.0,
+      dietaryFibre: 9.0,
+      totalSugar: 1.0,
+      addedSugar: 0,
+      protein: 11.0,
+      sodium: 8,
+    },
+  },
 ];
 
 // Mapping of alternative barcodes / common scan variations to products
@@ -593,6 +621,8 @@ export const BARCODE_ALIASES: Record<string, string> = {
   '044000030148': 'prod-oreo-vanilla',
   '0044000030148': 'prod-oreo-vanilla',
   '44000030148': 'prod-oreo-vanilla',
+  '762202225512': 'prod-oreo-vanilla',
+  '7622202225512': 'prod-oreo-vanilla',
   '7622300336738': 'prod-oreo-vanilla',
   '6111031005590': 'prod-oreo-vanilla',
   '8901233024893': 'prod-oreo-vanilla',
@@ -649,6 +679,10 @@ export const BARCODE_ALIASES: Record<string, string> = {
 
   // Farmley Makhana
   '8906132470014': 'prod-farmley-makhana',
+
+  // Quaker Oats (PepsiCo)
+  '5000108022152': 'prod-quaker-oats-1kg',
+  '05000108022152': 'prod-quaker-oats-1kg',
 };
 
 export function findInCatalog(barcode: string): Product | null {

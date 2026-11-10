@@ -48,6 +48,7 @@ async function tryFetchOFF(url: string): Promise<any | null> {
   try {
     const res = await fetch(url, {
       headers: { 'User-Agent': 'FoodLens/1.0 (contact@foodlens.app)' },
+      signal: AbortSignal.timeout(3500),
     });
     if (!res.ok) return null;
     const json = (await res.json()) as any;

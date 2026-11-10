@@ -24,13 +24,13 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 glass border-b border-[rgba(34,197,94,0.12)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left: Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#22c55e] to-[#16a34a] flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:shadow-green-500/50 transition-shadow">
-            <Scan className="w-4.5 h-4.5 text-white stroke-[2.5]" />
+        <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#22c55e] to-[#16a34a] flex items-center justify-center shadow-md shadow-green-500/30 group-hover:shadow-green-500/50 transition-shadow">
+            <Scan className="w-4 h-4 text-white stroke-[2.5]" />
           </div>
-          <span className="font-bold text-lg tracking-tight text-white">
+          <span className="font-bold text-base sm:text-lg tracking-tight text-white">
             Food<span className="text-gradient-green">Lens</span>
           </span>
         </Link>
@@ -86,7 +86,7 @@ export function Navbar() {
         </nav>
 
         {/* Right: Auth + CTA */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {/* AI Active Badge */}
           <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(34,197,94,0.08)] border border-[rgba(34,197,94,0.18)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
@@ -95,72 +95,79 @@ export function Navbar() {
 
           {/* User Auth Section */}
           {loading ? (
-            <div className="w-24 h-9 rounded-xl bg-white/5 animate-pulse" />
+            <div className="w-20 sm:w-24 h-8 sm:h-9 rounded-xl bg-white/5 animate-pulse" />
           ) : user ? (
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-[rgba(34,197,94,0.2)] text-left transition-colors"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-[rgba(34,197,94,0.2)] text-left transition-colors"
+                aria-label="User Menu"
               >
                 {user.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
                     alt={user.name}
-                    className="w-7 h-7 rounded-lg object-cover border border-emerald-500/40"
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg object-cover border border-emerald-500/40"
                   />
                 ) : (
-                  <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-xs border border-emerald-500/30">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-xs border border-emerald-500/30">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                 )}
                 <span className="hidden sm:inline text-xs font-semibold text-white max-w-[100px] truncate">
                   {user.name.split(' ')[0]}
                 </span>
-                <ChevronDown className="w-3.5 h-3.5 text-[#4b7a5e]" />
+                <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
               </button>
 
-              {/* Dropdown Menu */}
+              {/* Backdrop & Dropdown Menu */}
               {dropdownOpen && (
-                <div
-                  className="absolute right-0 mt-2 w-56 glass-card p-2 rounded-2xl shadow-2xl border border-[rgba(34,197,94,0.2)] z-50 animate-in fade-in slide-in-from-top-2"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  <div className="px-3 py-2 border-b border-white/5 mb-1">
-                    <p className="text-xs font-bold text-white truncate">{user.name}</p>
-                    <p className="text-[11px] text-[#4b7a5e] truncate">{user.email}</p>
+                <>
+                  <div
+                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs sm:hidden"
+                    onClick={() => setDropdownOpen(false)}
+                  />
+                  <div
+                    className="fixed sm:absolute right-3 sm:right-0 top-16 sm:top-auto sm:mt-2 w-[calc(100vw-1.5rem)] sm:w-56 glass-card p-2 rounded-2xl shadow-2xl border border-[rgba(34,197,94,0.25)] z-50 animate-in fade-in slide-in-from-top-2"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <div className="px-3 py-2 border-b border-white/5 mb-1">
+                      <p className="text-xs font-bold text-white truncate">{user.name}</p>
+                      <p className="text-[11px] text-zinc-400 truncate">{user.email}</p>
+                    </div>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-2.5 px-3 py-2.5 sm:py-2 rounded-xl text-xs font-semibold text-[#86efac] hover:text-white hover:bg-emerald-500/10 transition-colors"
+                    >
+                      <LayoutDashboard className="w-4 h-4 text-emerald-400" />
+                      Nutrition Dashboard
+                    </Link>
+                    <Link
+                      href="/history"
+                      className="flex items-center gap-2.5 px-3 py-2.5 sm:py-2 rounded-xl text-xs font-semibold text-[#86efac] hover:text-white hover:bg-emerald-500/10 transition-colors"
+                    >
+                      <History className="w-4 h-4 text-emerald-400" />
+                      Inspection Logs
+                    </Link>
+                    <button
+                      onClick={() => signOut()}
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 sm:py-2 rounded-xl text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-left"
+                    >
+                      <LogOut className="w-4 h-4 text-red-400" />
+                      Sign Out
+                    </button>
                   </div>
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#86efac] hover:text-white hover:bg-emerald-500/10 transition-colors"
-                  >
-                    <LayoutDashboard className="w-4 h-4 text-emerald-400" />
-                    Nutrition Dashboard
-                  </Link>
-                  <Link
-                    href="/history"
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#86efac] hover:text-white hover:bg-emerald-500/10 transition-colors"
-                  >
-                    <History className="w-4 h-4 text-emerald-400" />
-                    Inspection Logs
-                  </Link>
-                  <button
-                    onClick={() => signOut()}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-left"
-                  >
-                    <LogOut className="w-4 h-4 text-red-400" />
-                    Sign Out
-                  </button>
-                </div>
+                </>
               )}
             </div>
           ) : (
             <button
               onClick={signInWithGoogle}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-emerald-500/30 text-xs sm:text-sm font-semibold text-white transition-all shadow-sm"
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-emerald-500/30 text-xs sm:text-sm font-semibold text-white transition-all shadow-sm"
               title="Sign in with Google"
             >
               {/* Google colorful G logo SVG */}
-              <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -183,9 +190,9 @@ export function Navbar() {
           )}
 
           {/* Quick Scan CTA */}
-          <Link href="/scan" className="btn-primary text-xs sm:text-sm px-3.5 sm:px-4 py-2">
+          <Link href="/scan" className="btn-primary text-xs sm:text-sm px-2.5 sm:px-4 py-1.5 sm:py-2">
             <Zap className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Scan Now</span>
+            <span>Scan<span className="hidden sm:inline"> Now</span></span>
           </Link>
         </div>
       </div>

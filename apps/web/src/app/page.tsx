@@ -193,62 +193,62 @@ export default function HomePage() {
         <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-20 pointer-events-none" style={{ background: 'radial-gradient(circle, #22c55e 0%, transparent 70%)' }} />
         <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full opacity-10 pointer-events-none" style={{ background: 'radial-gradient(circle, #22c55e 0%, transparent 70%)' }} />
 
-        <div className="relative z-10 px-8 py-12 sm:px-12 sm:py-16 flex flex-col items-center text-center">
+        <div className="relative z-10 px-4 py-8 sm:px-12 sm:py-16 flex flex-col items-center text-center">
           {/* Pill badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-bold" style={{ background: 'rgba(34,197,94,0.12)', color: '#86efac', border: '1px solid rgba(34,197,94,0.25)' }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
-            FSSAI · WHO · EFSA Evidence-Based Analysis
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full mb-4 sm:mb-6 text-[11px] sm:text-xs font-bold" style={{ background: 'rgba(34,197,94,0.12)', color: '#86efac', border: '1px solid rgba(34,197,94,0.25)' }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse flex-shrink-0" />
+            <span>FSSAI · WHO · EFSA Analysis</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight max-w-3xl leading-[1.1] text-white">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight max-w-3xl leading-[1.15] sm:leading-[1.1] text-white">
             Know Exactly<br />
             <span className="text-gradient-green">What You Eat</span>
           </h1>
 
-          <p className="text-sm sm:text-base mt-5 max-w-xl leading-relaxed" style={{ color: '#86efac', opacity: 0.8 }}>
+          <p className="text-xs sm:text-base mt-3 sm:mt-5 max-w-xl leading-relaxed text-zinc-300">
             Scan any Indian packed food barcode — chips, biscuits, noodles, namkeen — and instantly decode ingredients, additives, and nutrition risk.
           </p>
 
           {/* Search bar */}
-          <div className="w-full max-w-2xl mt-10">
+          <div className="w-full max-w-2xl mt-6 sm:mt-10">
             <form
               onSubmit={handleSearch}
-              className="flex items-center gap-2 rounded-2xl p-2 transition-all"
-              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(34,197,94,0.2)', backdropFilter: 'blur(10px)' }}
+              className="flex items-center gap-1.5 sm:gap-2 rounded-2xl p-1.5 sm:p-2 transition-all"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(34,197,94,0.25)', backdropFilter: 'blur(10px)' }}
             >
-              <div className="pl-2 text-[#4b7a5e]">
-                <Search className="w-5 h-5" />
+              <div className="pl-2 sm:pl-2.5 text-zinc-400 flex-shrink-0">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Barcode or snack name (e.g. Kurkure, Lay's, 8901491001021)..."
-                className="flex-1 bg-transparent py-2.5 px-2 text-sm text-white placeholder-[#4b7a5e] focus:outline-none"
+                placeholder="Search snack or barcode..."
+                className="flex-1 bg-transparent py-2 sm:py-2.5 px-2 text-base sm:text-sm text-white placeholder-zinc-500 focus:outline-none min-w-0"
               />
-              <button type="submit" className="btn-primary text-sm px-5 py-2.5">
-                <Zap className="w-4 h-4" />
-                Analyze
+              <button type="submit" className="btn-primary text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 flex-shrink-0">
+                <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span>Analyze</span>
               </button>
               <Link
                 href="/scan"
-                className="btn-secondary text-sm px-4 py-2.5"
+                className="btn-secondary text-xs sm:text-sm px-2.5 sm:px-4 py-2 sm:py-2.5 flex-shrink-0"
                 title="Open Camera Scanner"
               >
-                <Scan className="w-4 h-4" />
+                <Scan className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">Camera</span>
               </Link>
             </form>
 
-            {/* Quick chip tags */}
-            <div className="flex items-center justify-center gap-2 flex-wrap mt-4">
-              <span className="text-xs font-medium" style={{ color: '#4b7a5e' }}>Try:</span>
-              {POPULAR_CHIPS.slice(0, 7).map((p) => (
+            {/* Quick chip tags: smooth horizontal swipe on phones */}
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 px-0.5 mt-3 sm:justify-center">
+              <span className="text-xs font-semibold text-zinc-400 flex-shrink-0 mr-1">Try:</span>
+              {POPULAR_CHIPS.map((p) => (
                 <Link
                   key={p.code}
                   href={`/product/${p.code}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all"
-                  style={{ background: 'rgba(34,197,94,0.08)', color: '#86efac', border: '1px solid rgba(34,197,94,0.15)' }}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all flex-shrink-0 hover:border-emerald-400/40 active:scale-95"
+                  style={{ background: 'rgba(34,197,94,0.08)', color: '#86efac', border: '1px solid rgba(34,197,94,0.18)' }}
                 >
                   <span>{p.icon}</span>
                   <span>{p.label}</span>
@@ -258,15 +258,15 @@ export default function HomePage() {
           </div>
 
           {/* Stats row */}
-          <div className="flex items-center gap-8 mt-10 pt-8" style={{ borderTop: '1px solid rgba(34,197,94,0.1)' }}>
+          <div className="flex items-center justify-around sm:justify-center gap-4 sm:gap-8 mt-6 sm:mt-10 pt-6 sm:pt-8 w-full max-w-lg" style={{ borderTop: '1px solid rgba(34,197,94,0.1)' }}>
             {[
-              { value: '16+', label: 'Indian Products' },
-              { value: '50+', label: 'Additives Mapped' },
-              { value: '12', label: 'AI Intent Categories' },
+              { value: '16+', label: 'Verified Indian Snacks' },
+              { value: '50+', label: 'Additives Decoded' },
+              { value: '100%', label: 'Scientific Guidance' },
             ].map((s, i) => (
               <div key={i} className="text-center">
-                <div className="text-2xl font-black text-gradient-green">{s.value}</div>
-                <div className="text-[11px] font-medium mt-0.5" style={{ color: '#4b7a5e' }}>{s.label}</div>
+                <div className="text-xl sm:text-2xl font-black text-gradient-green">{s.value}</div>
+                <div className="text-[10px] sm:text-[11px] font-medium text-zinc-400 mt-0.5">{s.label}</div>
               </div>
             ))}
           </div>
@@ -346,14 +346,14 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-3">
           {RECENT_SCANS.map((item) => (
             <Link
               key={item.barcode}
               href={`/product/${item.barcode}`}
-              className="card card-hover p-4 flex items-center justify-between gap-4 group"
+              className="card card-hover p-3.5 sm:p-4 flex items-center justify-between gap-3 group active:scale-[0.99] transition-transform"
             >
-              <div className="flex items-center gap-3.5 min-w-0">
+              <div className="flex items-center gap-3 min-w-0">
                 <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden" style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.1)' }}>
                   <ProductImage
                     src={item.image}
@@ -365,11 +365,11 @@ export default function HomePage() {
 
                 <div className="min-w-0">
                   <h3 className="text-sm font-bold text-white truncate group-hover:text-[#86efac] transition-colors">{item.name}</h3>
-                  <p className="text-[11px] mt-0.5" style={{ color: '#4b7a5e' }}>{item.brand} · {item.time}</p>
-                  <div className="flex items-center gap-2 mt-1.5">
-                    <span className="text-[10px] px-2 py-0.5 rounded-md font-medium" style={{ background: 'rgba(255,255,255,0.05)', color: '#86efac' }}>{item.cal}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-md font-medium" style={{ background: 'rgba(255,255,255,0.05)', color: '#86efac' }}>Sugar: {item.sugar}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-md font-medium" style={{ background: 'rgba(255,255,255,0.05)', color: '#86efac' }}>Na: {item.sodium}</span>
+                  <p className="text-[11px] text-zinc-400 mt-0.5">{item.brand} · {item.time}</p>
+                  <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                    <span className="text-[10px] px-2 py-0.5 rounded-md font-semibold" style={{ background: 'rgba(255,255,255,0.05)', color: '#86efac' }}>{item.cal}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-md font-semibold" style={{ background: 'rgba(255,255,255,0.05)', color: '#86efac' }}>Sugar: {item.sugar}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-md font-semibold" style={{ background: 'rgba(255,255,255,0.05)', color: '#86efac' }}>Na: {item.sodium}</span>
                   </div>
                 </div>
               </div>

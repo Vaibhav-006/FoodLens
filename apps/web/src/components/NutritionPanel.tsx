@@ -6,9 +6,10 @@ const TRAFFIC_CLASSES = {
   green: 'traffic-green',
   amber: 'traffic-amber',
   red: 'traffic-red',
+  unknown: 'bg-white/5 text-zinc-400 border border-white/10',
 };
 
-const TRAFFIC_EMOJI = { green: '🟢', amber: '🟡', red: '🔴' };
+const TRAFFIC_EMOJI = { green: '🟢', amber: '🟡', red: '🔴', unknown: '⚪' };
 
 function formatNutrient(val: number | null | undefined): string {
   if (val === null || val === undefined || isNaN(Number(val))) return '0';

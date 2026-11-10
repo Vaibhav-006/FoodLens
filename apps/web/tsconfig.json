@@ -21,7 +21,7 @@
         "./src/*"
       ],
       "@foodlens/core": [
-        "../../packages/core/src"
+        "../../packages/core/src/index.ts"
       ]
     },
     "allowJs": true,

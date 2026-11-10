@@ -53,13 +53,10 @@ const LABELS: Partial<Record<keyof NutritionFacts, string>> = {
   sodium: 'Sodium',
 };
 
-function getTrafficLight(nutrient: keyof NutritionFacts, value: number, isLiquid = false): TrafficLight {
-  // Liquids have stricter sugar thresholds (FSA / UK: green <= 2.5g, amber <= 11.25g)
-  if (nutrient === 'totalSugar' && isLiquid) {
-    if (value <= 2.5) return 'green';
-    if (value <= 8) return 'amber';
-    return 'red';
-  }
+function getTrafficLight(nutrient: keyof NutritionFacts, rawValue: any, isLiquid = false): TrafficLight {
+  if (rawValue === null || rawValue === undefined) return 'unknown';
+  const value = Number(rawValue);
+  if (isNaN(value)) return 'unknown';
 
   // Positives: protein and fibre (higher is better)
   if (nutrient === 'protein' || nutrient === 'dietaryFibre') {
@@ -69,6 +66,13 @@ function getTrafficLight(nutrient: keyof NutritionFacts, value: number, isLiquid
     return 'amber';
   }
 
+  // Liquids have stricter sugar thresholds (FSA / UK: green <= 2.5g, amber <= 8g)
+  if (nutrient === 'totalSugar' && isLiquid) {
+    if (value <= 2.5) return 'green';
+    if (value <= 8) return 'amber';
+    return 'red';
+  }
+
   const threshold = THRESHOLDS[nutrient];
   if (!threshold) return 'green';
   if (value <= threshold.green) return 'green';
@@ -76,7 +80,38 @@ function getTrafficLight(nutrient: keyof NutritionFacts, value: number, isLiquid
   return 'red';
 }
 
-export function scoreNutrition(nutrition: NutritionFacts): NutrientScore[] {
+/**
+ * Sanitizes nutrition facts by stripping units (e.g. "7g", "135mg", "160 kcal")
+ * and ensuring values are pure numbers or null.
+ */
+export function sanitizeNutrition(nutrition: any): NutritionFacts {
+  const parseNum = (val: any): number | null => {
+    if (val === null || val === undefined) return null;
+    if (typeof val === 'number') return isNaN(val) ? null : val;
+    const str = String(val).trim();
+    if (!str || str === '—' || str.toLowerCase() === 'n/a' || str.toLowerCase() === 'null') return null;
+    const match = str.match(/[-+]?[0-9]*\.?[0-9]+/);
+    if (!match) return null;
+    const n = parseFloat(match[0]);
+    return isNaN(n) ? null : n;
+  };
+
+  return {
+    calories: parseNum(nutrition?.calories),
+    totalFat: parseNum(nutrition?.totalFat),
+    saturatedFat: parseNum(nutrition?.saturatedFat),
+    transFat: parseNum(nutrition?.transFat),
+    totalCarbs: parseNum(nutrition?.totalCarbs),
+    dietaryFibre: parseNum(nutrition?.dietaryFibre),
+    totalSugar: parseNum(nutrition?.totalSugar),
+    addedSugar: parseNum(nutrition?.addedSugar),
+    protein: parseNum(nutrition?.protein),
+    sodium: parseNum(nutrition?.sodium),
+  };
+}
+
+export function scoreNutrition(rawNutrition: NutritionFacts): NutrientScore[] {
+  const nutrition = sanitizeNutrition(rawNutrition);
   const keys = Object.keys(nutrition) as (keyof NutritionFacts)[];
   const isLiquid = (nutrition.totalFat ?? 0) === 0 && (nutrition.protein ?? 0) === 0 && (nutrition.totalSugar ?? 0) > 0;
 
@@ -84,35 +119,80 @@ export function scoreNutrition(nutrition: NutritionFacts): NutrientScore[] {
     const value = nutrition[nutrient];
     const dv = DAILY_VALUES[nutrient];
 
+    let dvPct: number | null = null;
+    if (value !== null && !isNaN(value) && dv !== undefined && dv > 0) {
+      dvPct = Math.round((value / dv) * 100);
+    }
+
     return {
       nutrient,
       valuePer100g: value,
-      trafficLight: value !== null ? getTrafficLight(nutrient, value, isLiquid) : 'green',
+      trafficLight: getTrafficLight(nutrient, value, isLiquid),
       label: LABELS[nutrient] ?? nutrient,
       unit: UNITS[nutrient] ?? '',
-      dailyValuePercent:
-        value !== null && dv !== undefined
-          ? Math.round((value / dv) * 100)
-          : (value === 0 ? 0 : null),
+      dailyValuePercent: dvPct,
     };
   });
 }
 
 /**
+ * Checks whether the product has meaningful nutrition facts reported.
+ * Requires at least 2 primary macronutrients to be non-null and at least 1 non-zero.
+ */
+export function hasReportedNutrition(rawNutrition: NutritionFacts): boolean {
+  if (!rawNutrition) return false;
+  const nutrition = sanitizeNutrition(rawNutrition);
+  let count = 0;
+  let nonZeroCount = 0;
+  const primary: (keyof NutritionFacts)[] = ['calories', 'totalFat', 'totalSugar', 'sodium', 'protein', 'totalCarbs'];
+  for (const k of primary) {
+    const val = nutrition[k];
+    if (val !== null && val !== undefined && !isNaN(val)) {
+      count++;
+      if (val > 0) nonZeroCount++;
+    }
+  }
+  return count >= 2 && nonZeroCount >= 1;
+}
+
+/**
  * Returns an overall health score 0–100 (higher = healthier).
+ * If nutrition facts are missing / unpopulated, returns null (unrated / incomplete).
  * Penalises red nutrients, rewards green fibre/protein, and penalises free liquid sugars.
  */
-export function computeOverallScore(nutrition: NutritionFacts): number {
+export function computeOverallScore(rawNutrition: NutritionFacts): number | null {
+  const nutrition = sanitizeNutrition(rawNutrition);
+  if (!hasReportedNutrition(nutrition)) {
+    return null;
+  }
+
   const scores = scoreNutrition(nutrition);
   let penalty = 0;
   let bonus = 0;
 
   for (const s of scores) {
-    if (s.trafficLight === 'red') penalty += 18;
-    if (s.trafficLight === 'amber') penalty += 8;
-    if (s.nutrient === 'dietaryFibre' && (s.valuePer100g ?? 0) >= 3) bonus += 10;
-    if (s.nutrient === 'protein' && (s.valuePer100g ?? 0) >= 5) bonus += 5;
-    if (s.nutrient === 'transFat' && (s.valuePer100g ?? 0) > 0.5) penalty += 20;
+    if (s.nutrient === 'totalFat') {
+      if (s.trafficLight === 'red') penalty += 10;
+      else if (s.trafficLight === 'amber') penalty += 4;
+    } else if (s.nutrient === 'saturatedFat') {
+      if (s.trafficLight === 'red') penalty += 16;
+      else if (s.trafficLight === 'amber') penalty += 6;
+    } else if (s.nutrient === 'totalSugar') {
+      if (s.trafficLight === 'red') penalty += 16;
+      else if (s.trafficLight === 'amber') penalty += 6;
+    } else if (s.nutrient === 'addedSugar') {
+      if (s.trafficLight === 'red') penalty += 6;
+    } else if (s.nutrient === 'sodium') {
+      if (s.trafficLight === 'red') penalty += 14;
+      else if (s.trafficLight === 'amber') penalty += 6;
+    } else if (s.nutrient === 'calories') {
+      if (s.trafficLight === 'red') penalty += 6;
+      else if (s.trafficLight === 'amber') penalty += 2;
+    }
+
+    if (s.nutrient === 'dietaryFibre' && (s.valuePer100g ?? 0) >= 3) bonus += 8;
+    if (s.nutrient === 'protein' && (s.valuePer100g ?? 0) >= 5) bonus += 6;
+    if (s.nutrient === 'transFat' && (s.valuePer100g ?? 0) > 0.5) penalty += 15;
   }
 
   const sugar = nutrition.totalSugar ?? 0;
@@ -120,13 +200,14 @@ export function computeOverallScore(nutrition: NutritionFacts): number {
   const prot = nutrition.protein ?? 0;
   const fibre = nutrition.dietaryFibre ?? 0;
 
-  // Liquid / Empty-calorie sugar penalty:
-  // Pure sugary drinks (high sugar, 0 fat, 0 protein, 0 fibre)
+  // Liquid sugary drinks penalty (high sugar, 0 fat, 0 protein, 0 fibre)
   if (sugar >= 8 && fat === 0 && prot === 0 && fibre === 0) {
-    penalty += 45; // Caps sugary sodas like Coca-Cola at ~30-35 (Nutri-Score E)
-  } else if (sugar >= 25) {
-    penalty += 15;
+    penalty += 28;
+  } else if (sugar >= 30) {
+    penalty += 10;
   }
 
-  return Math.max(0, Math.min(100, 100 - penalty + bonus));
+  const rawScore = 100 - penalty + bonus;
+  // Floor for packaged foods is 15
+  return Math.max(15, Math.min(100, Math.round(rawScore)));
 }

@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { Product, ChatMessage } from '@foodlens/core';
-import { parseIngredients, computeOverallScore } from '@foodlens/core';
+import { parseIngredients, computeOverallScore, sanitizeNutrition } from '@foodlens/core';
 
 function buildSystemContext(products: Product[]): string {
   const productSummaries = products
@@ -289,7 +289,7 @@ export async function generateProductWithAI(barcode: string, hint?: string): Pro
         source: 'manual',
         ingredientsRaw: data.ingredientsRaw || '',
         ingredients: parseIngredients(data.ingredientsRaw || ''),
-        nutritionPer100g: {
+        nutritionPer100g: sanitizeNutrition({
           calories: data.calories ?? 500,
           totalFat: data.totalFat ?? 25,
           saturatedFat: data.saturatedFat ?? 10,
@@ -300,7 +300,7 @@ export async function generateProductWithAI(barcode: string, hint?: string): Pro
           addedSugar: data.addedSugar ?? 2,
           protein: data.protein ?? 6,
           sodium: data.sodium ?? 600,
-        },
+        }),
       };
     } catch {
       continue;

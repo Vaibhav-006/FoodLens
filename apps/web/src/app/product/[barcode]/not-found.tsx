@@ -28,30 +28,32 @@ export default function ProductNotFound() {
   };
 
   return (
-    <div className="max-w-xl mx-auto py-10 px-4">
-      <div className="card text-center py-8">
-        <div className="text-5xl mb-3">🔍</div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Barcode Not In Database</h1>
-        <p className="text-sm text-gray-500 mb-6 max-w-md mx-auto">
-          This exact barcode wasn't catalogued in Open Food Facts yet. Try searching by snack name or pick from popular snacks below.
-        </p>
+    <div className="max-w-xl mx-auto py-6 sm:py-10 px-2 sm:px-4">
+      <div className="card text-center p-5 sm:p-8 space-y-6">
+        <div className="text-5xl">🔍</div>
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black text-white mb-2">Barcode Not In Database</h1>
+          <p className="text-xs sm:text-sm text-[#86efac]/80 max-w-md mx-auto leading-relaxed">
+            This exact barcode wasn&apos;t catalogued in Open Food Facts yet. Try searching by snack name or pick from popular snacks below.
+          </p>
+        </div>
 
         {/* Quick Search */}
-        <form onSubmit={handleSearch} className="flex gap-2 max-w-md mx-auto mb-8">
+        <form onSubmit={handleSearch} className="flex gap-2 max-w-md mx-auto w-full">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by snack name (e.g. Kurkure, Oreo)..."
-            className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+            placeholder="Search snack (e.g. Kurkure, Oreo)..."
+            className="flex-1 rounded-xl px-3.5 py-2.5 text-base sm:text-sm text-white placeholder-[#2d5236] bg-white/[0.04] border border-white/10 focus:outline-none focus:border-emerald-500/50"
           />
-          <button type="submit" className="btn-primary text-sm px-4 py-2.5">
+          <button type="submit" className="btn-primary text-xs sm:text-sm px-4 py-2.5 active:scale-95">
             Search
           </button>
         </form>
 
-        <div className="border-t border-gray-100 pt-6">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+        <div className="border-t border-white/[0.08] pt-6">
+          <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#4b7a5e] mb-3">
             Or view verified snacks:
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-left">
@@ -59,17 +61,17 @@ export default function ProductNotFound() {
               <Link
                 key={s.code}
                 href={`/product/${s.code}`}
-                className="flex items-center gap-2 p-2.5 rounded-xl border border-gray-100 hover:border-brand-300 hover:bg-brand-50/50 transition-all text-xs font-medium text-gray-700"
+                className="flex items-center gap-2 p-2.5 rounded-xl border border-white/[0.06] hover:border-emerald-500/40 bg-white/[0.02] hover:bg-emerald-500/10 transition-all text-xs font-medium text-white active:scale-95"
               >
-                <span>{s.icon}</span>
+                <span className="text-sm">{s.icon}</span>
                 <span className="truncate">{s.name}</span>
               </Link>
             ))}
           </div>
         </div>
 
-        <div className="mt-8">
-          <Link href="/" className="text-xs text-gray-400 hover:text-brand-600 transition-colors">
+        <div className="pt-2">
+          <Link href="/scan" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4b7a5e] hover:text-emerald-400 transition-colors">
             ← Return to Barcode Scanner
           </Link>
         </div>

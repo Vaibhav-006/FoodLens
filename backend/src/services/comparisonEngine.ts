@@ -10,7 +10,7 @@ export function compareProducts(products: Product[]): ComparisonResult {
 
   for (const product of products) {
     nutrientScores[product.id] = scoreNutrition(product.nutritionPer100g);
-    overallScores[product.id] = computeOverallScore(product.nutritionPer100g);
+    overallScores[product.id] = computeOverallScore(product.nutritionPer100g) ?? 50;
   }
 
   // Find winner (highest overall score)

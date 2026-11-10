@@ -12,6 +12,15 @@ dist/
 .cache/
 *.tsbuildinfo
 
+# Expo / Mobile (apps/mobile)
+.expo/
+.expo-shared/
+web-build/
+
+# Testing & Coverage
+coverage/
+*.lcov
+
 # ─── Environment Variables & Secrets (NEVER COMMIT) ──────────────────────────
 .env
 .env*.local
@@ -22,6 +31,8 @@ dist/
 backend/.env
 apps/web/.env
 apps/web/.env.local
+apps/mobile/.env
+apps/mobile/.env.local
 
 # Preserve example config templates
 !.env.example
@@ -29,6 +40,7 @@ apps/web/.env.local
 !.env.local.example
 !backend/.env.example
 !apps/web/.env.local.example
+!apps/mobile/.env.example
 
 # ─── Logs & Debugging ────────────────────────────────────────────────────────
 logs/
@@ -38,7 +50,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# ─── OS Specific ─────────────────────────────────────────────────────────────
+# ─── OS & Scratch Files ───────────────────────────────────────────────────────
 .DS_Store
 .DS_Store?
 ._*
@@ -47,6 +59,8 @@ pnpm-debug.log*
 ehthumbs.db
 Thumbs.db
 desktop.ini
+*.tmp
+*.temp
 
 # ─── IDE & Editors ───────────────────────────────────────────────────────────
 .idea/

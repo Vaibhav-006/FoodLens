@@ -61,12 +61,12 @@ function IngredientCard({ ing, defaultOpen = false }: { ing: ParsedIngredient; d
     >
       <button
         type="button"
-        className="w-full flex items-center justify-between px-4 py-3.5 text-left transition-colors hover:bg-white/[0.02]"
+        className="w-full flex items-center justify-between px-3.5 py-3 sm:px-4 sm:py-3.5 text-left transition-colors hover:bg-white/[0.02] gap-2"
         onClick={() => setOpen(!open)}
       >
-        <div className="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
+        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 pr-1">
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
               <span className="text-xs sm:text-sm font-bold text-white leading-snug">
                 {displayName}
               </span>
@@ -77,7 +77,7 @@ function IngredientCard({ ing, defaultOpen = false }: { ing: ParsedIngredient; d
               )}
             </div>
             {showOriginal && (
-              <p className="text-[11px] mt-0.5 truncate font-normal text-[#4b7a5e]">
+              <p className="text-[10px] sm:text-[11px] mt-0.5 truncate font-normal text-[#4b7a5e]">
                 Label on pack: &ldquo;{ing.originalText}&rdquo;
               </p>
             )}
@@ -85,7 +85,7 @@ function IngredientCard({ ing, defaultOpen = false }: { ing: ParsedIngredient; d
 
           {p && (
             <span
-              className={`text-[10px] font-bold px-2.5 py-1 rounded-full border flex items-center gap-1.5 flex-shrink-0 ${riskMeta.badgeStyle}`}
+              className={`text-[9px] sm:text-[10px] font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border flex items-center gap-1 sm:gap-1.5 flex-shrink-0 ${riskMeta.badgeStyle}`}
             >
               <RiskIcon className="w-3 h-3" />
               <span>{riskMeta.label}</span>
@@ -103,7 +103,7 @@ function IngredientCard({ ing, defaultOpen = false }: { ing: ParsedIngredient; d
 
       {open && p && (
         <div
-          className="px-5 py-4 space-y-4 text-xs"
+          className="px-3.5 py-3 sm:px-5 sm:py-4 space-y-3 sm:space-y-4 text-xs"
           style={{
             background: 'rgba(10, 15, 13, 0.5)',
             borderTop: '1px solid rgba(34, 197, 94, 0.1)',
@@ -221,8 +221,17 @@ function IngredientCard({ ing, defaultOpen = false }: { ing: ParsedIngredient; d
 export function IngredientsList({ ingredients }: { ingredients: ParsedIngredient[] }) {
   if (!ingredients.length) {
     return (
-      <div className="text-center py-10 text-xs text-[#4b7a5e]">
-        No ingredient list available for this product.
+      <div className="text-center py-10 px-4 space-y-3">
+        <div className="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center bg-white/[0.04] text-zinc-400 border border-white/10 text-xl">
+          📦
+        </div>
+        <h3 className="text-sm font-bold text-white">No Ingredients Uploaded Yet</h3>
+        <p className="text-xs text-[#86efac]/70 max-w-sm mx-auto leading-relaxed">
+          Open Food Facts contributors registered this barcode and name, but haven&apos;t typed the ingredients label yet.
+        </p>
+        <p className="text-xs text-emerald-400 font-semibold pt-1">
+          💡 Tip: Click the <strong className="text-white">✦ AI Chat</strong> tab above to ask about typical ingredients for this snack!
+        </p>
       </div>
     );
   }
@@ -234,7 +243,7 @@ export function IngredientsList({ ingredients }: { ingredients: ParsedIngredient
   return (
     <div className="space-y-4">
       {/* Header bar */}
-      <div className="flex items-center justify-between pb-3 border-b border-[rgba(34,197,94,0.12)]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[rgba(34,197,94,0.12)]">
         <div>
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-emerald-400" />
@@ -242,13 +251,13 @@ export function IngredientsList({ ingredients }: { ingredients: ParsedIngredient
               Ingredient Intelligence Engine ({ingredients.length})
             </h2>
           </div>
-          <p className="text-xs text-[#4b7a5e] mt-1.5">
+          <p className="text-[11px] sm:text-xs text-[#4b7a5e] mt-1.5">
             Decoded additive E-numbers, functional categories, and FSSAI health assessments
           </p>
         </div>
 
         {withRisk.length > 0 && (
-          <span className="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-xl font-bold flex items-center gap-1.5 flex-shrink-0">
+          <span className="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-xl font-bold flex items-center gap-1.5 self-start sm:self-auto flex-shrink-0">
             <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
             <span>{withRisk.length} to watch</span>
           </span>

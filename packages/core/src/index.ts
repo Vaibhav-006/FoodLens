@@ -1,6 +1,20 @@
 export * from './types';
-export * from './nutrientScoring';
-export * from './openFoodFacts';
-export * from './productsCatalog';
 
+export {
+  scoreNutrition,
+  computeOverallScore,
+  hasReportedNutrition,
+  sanitizeNutrition,
+} from './nutrientScoring';
 
+export {
+  fetchFromOpenFoodFacts,
+  searchOpenFoodFactsByName,
+  parseIngredients,
+} from './openFoodFacts';
+
+export {
+  POPULAR_SNACKS_CATALOG,
+  BARCODE_ALIASES,
+  findInCatalog,
+} from './productsCatalog';

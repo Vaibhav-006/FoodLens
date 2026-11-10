@@ -593,6 +593,8 @@ export const BARCODE_ALIASES: Record<string, string> = {
   '044000030148': 'prod-oreo-vanilla',
   '0044000030148': 'prod-oreo-vanilla',
   '44000030148': 'prod-oreo-vanilla',
+  '762202225512': 'prod-oreo-vanilla',
+  '7622202225512': 'prod-oreo-vanilla',
   '7622300336738': 'prod-oreo-vanilla',
   '6111031005590': 'prod-oreo-vanilla',
   '8901233024893': 'prod-oreo-vanilla',

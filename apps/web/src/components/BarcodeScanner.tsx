@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { BrowserMultiFormatReader, IScannerControls } from '@zxing/browser';
 import { Camera, Square, AlertCircle, Scan } from 'lucide-react';
+import { ScanLoadingOverlay } from './ScanLoadingOverlay';
 
 export function BarcodeScanner() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [scanning, setScanning] = useState(false);
+  const [navigatingBarcode, setNavigatingBarcode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [permission, setPermission] = useState<'prompt' | 'granted' | 'denied'>('prompt');
   const controlsRef = useRef<IScannerControls | null>(null);
@@ -31,6 +33,7 @@ export function BarcodeScanner() {
             const barcode = result.getText();
             setScanning(false);
             controlsRef.current?.stop();
+            setNavigatingBarcode(barcode);
             router.push(`/product/${barcode}`);
           }
           if (err && !(err.name === 'NotFoundException')) {
@@ -101,6 +104,7 @@ export function BarcodeScanner() {
           </button>
         </div>
       )}
+      {navigatingBarcode && <ScanLoadingOverlay barcode={navigatingBarcode} />}
     </div>
   );
 }

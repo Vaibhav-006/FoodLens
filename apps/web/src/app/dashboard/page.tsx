@@ -158,25 +158,25 @@ export default function UserDashboardPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-12">
+    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-12">
       {/* ─── 1. User Profile Header ────────────────────────────────────────── */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-[rgba(34,197,94,0.18)] shadow-2xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-center gap-4 sm:gap-5">
+      <div className="glass-card p-4 sm:p-8 rounded-3xl border border-[rgba(34,197,94,0.18)] shadow-2xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+        <div className="flex items-center gap-3.5 sm:gap-5">
           {user.avatarUrl ? (
             <img
               src={user.avatarUrl}
               alt={user.name}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-emerald-500/40 shadow-lg shadow-emerald-500/20"
+              className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-emerald-500/40 shadow-lg shadow-emerald-500/20 flex-shrink-0"
             />
           ) : (
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-emerald-500/20 text-emerald-300 font-black text-2xl flex items-center justify-center border-2 border-emerald-500/40 shadow-lg shadow-emerald-500/20">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl bg-emerald-500/20 text-emerald-300 font-black text-xl sm:text-2xl flex items-center justify-center border-2 border-emerald-500/40 shadow-lg shadow-emerald-500/20 flex-shrink-0">
               {user.name.charAt(0).toUpperCase()}
             </div>
           )}
 
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h1 className="text-lg sm:text-2xl font-black text-white tracking-tight truncate">
                 {user.name}
               </h1>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
@@ -184,32 +184,32 @@ export default function UserDashboardPage() {
                 Google Verified
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-[#4b7a5e] mt-1">{user.email}</p>
-            <p className="text-[11px] text-[#3d634d] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#4b7a5e] mt-0.5 sm:mt-1 truncate">{user.email}</p>
+            <p className="text-[10px] sm:text-[11px] text-[#3d634d] mt-0.5">
               FoodLens Member · Active Dietary Intelligence
             </p>
           </div>
         </div>
 
         {/* Header Action Buttons */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <Link
             href="/scan"
-            className="btn-primary text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-lg"
+            className="btn-primary flex-1 sm:flex-initial text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5"
           >
             <Scan className="w-4 h-4" />
             Scan Snack
           </Link>
           <Link
             href="/compare"
-            className="px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-white text-xs sm:text-sm font-semibold border border-white/10 transition-colors flex items-center gap-1.5"
+            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-white text-xs sm:text-sm font-semibold border border-white/10 transition-colors flex items-center justify-center gap-1.5"
           >
             <Scale className="w-4 h-4 text-emerald-400" />
             Compare
           </Link>
           <button
             onClick={() => signOut()}
-            className="p-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-colors"
+            className="p-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-colors flex-shrink-0"
             title="Sign Out"
           >
             <LogOut className="w-4 h-4" />
@@ -217,75 +217,75 @@ export default function UserDashboardPage() {
         </div>
       </div>
 
-      {/* ─── 2. Food Inspection & Discovery Stats ───────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* ─── 2. Food Inspection & Discovery Stats (2x2 on Mobile, 4x1 on Desktop) ─── */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Metric 1: Total Inspected */}
-        <div className="glass-card p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
+        <div className="glass-card p-3.5 sm:p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
-              Products Checked
+            <p className="text-[10px] sm:text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
+              Checked
             </p>
-            <p className="text-3xl font-black text-white mt-1">{totalScans}</p>
-            <p className="text-[11px] text-[#3d634d] mt-1">Snacks decoded & inspected</p>
+            <p className="text-2xl sm:text-3xl font-black text-white mt-0.5 sm:mt-1">{totalScans}</p>
+            <p className="text-[10px] sm:text-[11px] text-[#3d634d] mt-0.5 sm:mt-1 line-clamp-1">Decoded & inspected</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-            <Scan className="w-6 h-6" />
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+            <Scan className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
         </div>
 
         {/* Metric 2: Clean Snacks Discovered */}
-        <div className="glass-card p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
+        <div className="glass-card p-3.5 sm:p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
-              Clean Snacks Found
+            <p className="text-[10px] sm:text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
+              Clean Snacks
             </p>
-            <p className="text-3xl font-black text-emerald-400 mt-1">{healthyDiscovered}</p>
-            <p className="text-[11px] text-[#3d634d] mt-1">Score 60+ with good ingredients</p>
+            <p className="text-2xl sm:text-3xl font-black text-emerald-400 mt-0.5 sm:mt-1">{healthyDiscovered}</p>
+            <p className="text-[10px] sm:text-[11px] text-[#3d634d] mt-0.5 sm:mt-1 line-clamp-1">Score 60+ healthy</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-            <Heart className="w-6 h-6" />
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+            <Heart className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
         </div>
 
         {/* Metric 3: Junk & HFSS Caught */}
-        <div className="glass-card p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
+        <div className="glass-card p-3.5 sm:p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
-              Unhealthy Flagged
+            <p className="text-[10px] sm:text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
+              Junk Flagged
             </p>
-            <p className="text-3xl font-black text-amber-400 mt-1">{junkCaught}</p>
-            <p className="text-[11px] text-[#3d634d] mt-1">Excess salt/fat or additives caught</p>
+            <p className="text-2xl sm:text-3xl font-black text-amber-400 mt-0.5 sm:mt-1">{junkCaught}</p>
+            <p className="text-[10px] sm:text-[11px] text-[#3d634d] mt-0.5 sm:mt-1 line-clamp-1">Excess salt/fat caught</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
-            <ShieldCheck className="w-6 h-6" />
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center flex-shrink-0">
+            <ShieldCheck className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
         </div>
 
         {/* Metric 4: Healthier Swaps Available */}
-        <div className="glass-card p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
+        <div className="glass-card p-3.5 sm:p-5 rounded-2xl border border-[rgba(34,197,94,0.15)] flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
-              Healthy Swaps
+            <p className="text-[10px] sm:text-xs font-semibold text-[#4b7a5e] uppercase tracking-wider">
+              Swaps Ready
             </p>
-            <p className="text-3xl font-black text-emerald-400 mt-1">
+            <p className="text-2xl sm:text-3xl font-black text-emerald-400 mt-0.5 sm:mt-1">
               {HEALTHY_ALTERNATIVES.length}+
             </p>
-            <p className="text-[11px] text-[#3d634d] mt-1">Better choices ready to try</p>
+            <p className="text-[10px] sm:text-[11px] text-[#3d634d] mt-0.5 sm:mt-1 line-clamp-1">Better choices ready</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-            <Sparkles className="w-6 h-6" />
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
         </div>
       </div>
 
       {/* ─── 3. Inspiring Scanner Banner ───────────────────────────────────── */}
-      <div className="glass-card p-6 sm:p-7 rounded-3xl border border-[rgba(34,197,94,0.15)] relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+      <div className="glass-card p-4 sm:p-7 rounded-3xl border border-[rgba(34,197,94,0.15)] relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5">
         <div className="space-y-1.5 max-w-xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             <Sparkles className="w-3.5 h-3.5" />
             Shop Smart & Eat Better
           </div>
-          <h2 className="text-lg font-bold text-white tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
             Scan freely before buying any snack
           </h2>
           <p className="text-xs text-[#4b7a5e] leading-relaxed">
@@ -293,14 +293,14 @@ export default function UserDashboardPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <Link href="/scan" className="btn-primary text-xs sm:text-sm px-5 py-3 rounded-2xl">
+        <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto flex-shrink-0">
+          <Link href="/scan" className="btn-primary flex-1 sm:flex-initial text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl flex items-center justify-center gap-2 active:scale-95">
             <Scan className="w-4 h-4" />
             Scan New Snack
           </Link>
           <Link
             href="/compare"
-            className="px-4 py-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-white text-xs sm:text-sm font-semibold border border-white/10 transition-colors flex items-center gap-2"
+            className="flex-1 sm:flex-initial px-4 py-2.5 sm:py-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-white text-xs sm:text-sm font-semibold border border-white/10 transition-colors flex items-center justify-center gap-2 active:scale-95"
           >
             <Scale className="w-4 h-4 text-emerald-400" />
             Compare

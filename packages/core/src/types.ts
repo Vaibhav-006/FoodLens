@@ -75,7 +75,7 @@ export interface IngredientProfile {
 
 // ─── Nutrient Scoring Types ───────────────────────────────────────────────────
 
-export type TrafficLight = 'green' | 'amber' | 'red';
+export type TrafficLight = 'green' | 'amber' | 'red' | 'unknown';
 
 export interface NutrientScore {
   nutrient: keyof NutritionFacts;

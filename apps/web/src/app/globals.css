@@ -28,6 +28,13 @@
     background-color: var(--bg-base);
     color: var(--text-primary);
     font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button, a, input, select, textarea {
+    touch-action: manipulation;
   }
 
   * {
@@ -138,6 +145,49 @@
 
   .animate-scanline {
     animation: scanline 2.2s ease-in-out infinite;
+  }
+
+  /* --- Hardware Accelerated 60fps Laser for Loading --- */
+  @keyframes laser-sweep {
+    0% { transform: translate3d(0, 0, 0); opacity: 0.6; }
+    50% { transform: translate3d(0, 85px, 0); opacity: 1; }
+    100% { transform: translate3d(0, 0, 0); opacity: 0.6; }
+  }
+
+  .animate-laser-sweep {
+    animation: laser-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    will-change: transform;
+  }
+
+  /* --- Hardware Accelerated Shimmer Bar --- */
+  @keyframes shimmer-bar-gpu {
+    0% { transform: translate3d(-100%, 0, 0); }
+    100% { transform: translate3d(250%, 0, 0); }
+  }
+
+  .animate-shimmer-gpu {
+    animation: shimmer-bar-gpu 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    will-change: transform;
+  }
+
+  /* --- Shimmer animation for loading bars --- */
+  @keyframes shimmer-bar {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+  }
+
+  .animate-shimmer-bar {
+    animation: shimmer-bar 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  /* --- Radar sweep animation --- */
+  @keyframes radar-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .animate-radar-spin {
+    animation: radar-spin 4s linear infinite;
   }
 
   /* --- Pulse glow for score --- */

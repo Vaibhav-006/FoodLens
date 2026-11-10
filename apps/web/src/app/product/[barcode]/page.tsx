@@ -5,6 +5,7 @@ import {
   fetchFromOpenFoodFacts,
   scoreNutrition,
   computeOverallScore,
+  sanitizeNutrition,
 } from '@foodlens/core';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
@@ -15,12 +16,15 @@ async function getProductData(barcode: string) {
 
   // 1. Instant hit from Curated Popular Catalog (0ms latency, zero network)
   try {
-    const catalogHit = findInCatalog(cleaned);
+    const catalogLookup = typeof findInCatalog === 'function' ? findInCatalog : null;
+    const catalogHit = catalogLookup ? catalogLookup(cleaned) : null;
     if (catalogHit) {
-      const nutrientScores = scoreNutrition(catalogHit.nutritionPer100g);
-      const overallScore = computeOverallScore(catalogHit.nutritionPer100g);
+      const cleanNutrition = sanitizeNutrition(catalogHit.nutritionPer100g);
+      const product = { ...catalogHit, nutritionPer100g: cleanNutrition };
+      const nutrientScores = scoreNutrition(cleanNutrition);
+      const overallScore = computeOverallScore(cleanNutrition);
       return {
-        product: catalogHit,
+        product,
         nutrientScores,
         overallScore,
       };
@@ -36,11 +40,25 @@ async function getProductData(barcode: string) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ barcode: cleaned }),
+        signal: AbortSignal.timeout(1200),
         next: { revalidate: 3600 },
       });
       if (res.ok) {
         const json = await res.json();
-        if (json.success && json.data) return json.data;
+        if (json.success && json.data) {
+          const rawProduct = json.data.product;
+          if (rawProduct) {
+            const cleanNutrition = sanitizeNutrition(rawProduct.nutritionPer100g);
+            const product = { ...rawProduct, nutritionPer100g: cleanNutrition };
+            const nutrientScores = scoreNutrition(cleanNutrition);
+            const overallScore = computeOverallScore(cleanNutrition);
+            return {
+              product,
+              nutrientScores,
+              overallScore,
+            };
+          }
+        }
       }
     } catch {}
   }
@@ -50,11 +68,13 @@ async function getProductData(barcode: string) {
     const product = await fetchFromOpenFoodFacts(cleaned);
     if (!product) return null;
 
-    const nutrientScores = scoreNutrition(product.nutritionPer100g);
-    const overallScore = computeOverallScore(product.nutritionPer100g);
+    const cleanNutrition = sanitizeNutrition(product.nutritionPer100g);
+    const cleanProduct = { ...product, nutritionPer100g: cleanNutrition };
+    const nutrientScores = scoreNutrition(cleanNutrition);
+    const overallScore = computeOverallScore(cleanNutrition);
 
     return {
-      product,
+      product: cleanProduct,
       nutrientScores,
       overallScore,
     };
