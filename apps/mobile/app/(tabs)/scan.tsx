@@ -129,7 +129,7 @@ export default function ScanTab() {
             </View>
             <View style={styles.bulletRow}>
               <View style={styles.dot} />
-              <Text style={styles.bulletText}>FoodLens will handle the rest!</Text>
+              <Text style={styles.bulletText}>PackTruth will handle the rest!</Text>
             </View>
           </View>
         </ScrollView>

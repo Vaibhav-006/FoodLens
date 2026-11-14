@@ -1,4 +1,4 @@
-# 🍎 FoodLens — Food Ingredient & Nutrition Intelligence Platform
+# 🔍 PackTruth — Food Ingredient & Nutrition Intelligence Platform
 
 > Scan any packaged snack barcode (chips, Kurkure, biscuits, noodles) and get comprehensive ingredient intelligence, quantity breakdowns, evidence-based risk profiles, side-by-side product comparisons, and AI food assistance in English and Hindi.
 
@@ -10,7 +10,7 @@ Built for **Web** (Next.js 15 + Tailwind CSS) and **Mobile** (React Native + Exp
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                              FOODLENS                                  │
+│                              PACKTRUTH                                 │
 ├────────────────────────────────────────────────────────────────────────┤
 │  1. Barcode Resolver          2. Quantity Intelligence Engine          │
 │     (Cache → DB → Open Food)     (Calories, Fat, Sugar, Sodium, DV%)   │

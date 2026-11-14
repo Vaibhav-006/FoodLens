@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const API = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = (process.env.EXPO_PUBLIC_API_URL || 'https://foodlens-qg92.onrender.com').replace(/\/+$/, '');
 
 const TRAFFIC_COLOR: Record<string, string> = {
   green: '#dcfce7',

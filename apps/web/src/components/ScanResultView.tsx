@@ -227,7 +227,7 @@ export function ScanResultView({ product, nutrientScores, overallScore }: ScanRe
             </h4>
             <p className="text-xs text-amber-200/90 leading-relaxed">
               This barcode is registered on Open Food Facts, but its nutritional label and ingredients were not submitted by the contributor.
-              FoodLens will not display misleading 100/100 or zero-calorie scores for missing data. You can ask our <strong className="text-white">✦ AI Assistant</strong> below to estimate typical ingredients and macros!
+              PackTruth will not display misleading 100/100 or zero-calorie scores for missing data. You can ask our <strong className="text-white">✦ AI Assistant</strong> below to estimate typical ingredients and macros!
             </p>
           </div>
         </div>

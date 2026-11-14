@@ -18,7 +18,7 @@ Product ${i + 1}: ${p.name} (${p.brand ?? 'Unknown Brand'})
     })
     .join('\n\n');
 
-  return `You are FoodLens AI, an intelligent clinical nutritionist and food scientist specializing in Indian packaged foods, FSSAI regulations, and ICMR-NIN nutritional standards.
+  return `You are PackTruth AI, an intelligent clinical nutritionist and food scientist specializing in Indian packaged foods, FSSAI regulations, and ICMR-NIN nutritional standards.
 
 SCANNED PRODUCTS CONTEXT:
 ${productSummaries}

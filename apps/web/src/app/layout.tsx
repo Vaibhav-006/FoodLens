@@ -5,7 +5,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { AuthProvider } from '@/context/AuthContext';
 
 export const metadata: Metadata = {
-  title: 'FoodLens — Know What You Eat',
+  title: 'PackTruth — The Truth Behind the Label',
   description: 'Scan packed snack barcodes for ingredients, nutrition facts, and risk intelligence.',
 };
 
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center gap-2 text-sm font-semibold text-[#86efac]">
                 <span className="w-2 h-2 rounded-full bg-[#22c55e]" />
-                FoodLens — Evidence-Based Food & Ingredient Intelligence
+                PackTruth — Evidence-Based Food & Ingredient Intelligence
               </div>
               <p className="text-xs text-[#4b7a5e]">
                 Based on FSSAI / WHO / EFSA scientific standards. For educational guidance only.

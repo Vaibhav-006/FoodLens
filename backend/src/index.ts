@@ -66,7 +66,7 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 FoodLens API running on http://localhost:${PORT}`);
+  console.log(`🚀 PackTruth API running on http://localhost:${PORT}`);
 });
 
 export default app;

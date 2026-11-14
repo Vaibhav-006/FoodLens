@@ -729,7 +729,7 @@ export default function ScanPage() {
           {/* Next Steps Guide */}
           <div className="card p-4 sm:p-6">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-3">
-              How FoodLens Works
+              How PackTruth Works
             </h3>
             <ul className="space-y-3 text-xs text-[#86efac]/90">
               <li className="flex items-start gap-3">
@@ -745,7 +745,7 @@ export default function ScanPage() {
                   2
                 </span>
                 <span>
-                  <strong className="text-white">INS Additive Intelligence</strong>: FoodLens decodes chemical codes (e.g. INS 150d, INS 627, INS 338) and flags health impacts.
+                  <strong className="text-white">INS Additive Intelligence</strong>: PackTruth decodes chemical codes (e.g. INS 150d, INS 627, INS 338) and flags health impacts.
                 </span>
               </li>
               <li className="flex items-start gap-3">

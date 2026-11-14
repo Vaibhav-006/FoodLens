@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator
 import { useLocalSearchParams, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const API = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = (process.env.EXPO_PUBLIC_API_URL || 'https://foodlens-qg92.onrender.com').replace(/\/+$/, '');
 const GREEN = '#00c853';
 
 export default function ProductScreen() {

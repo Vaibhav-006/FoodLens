@@ -186,7 +186,7 @@ export default function UserDashboardPage() {
             </div>
             <p className="text-xs sm:text-sm text-[#4b7a5e] mt-0.5 sm:mt-1 truncate">{user.email}</p>
             <p className="text-[10px] sm:text-[11px] text-[#3d634d] mt-0.5">
-              FoodLens Member · Active Dietary Intelligence
+              PackTruth Member · Active Dietary Intelligence
             </p>
           </div>
         </div>

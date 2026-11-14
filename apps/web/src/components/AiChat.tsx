@@ -135,7 +135,7 @@ export function AiChat({ product, barcode: barcodeProp, productName: productName
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: '⚠️ Failed to connect to FoodLens AI server. Please check your connection or try again in a moment.' },
+        { role: 'assistant', content: '⚠️ Failed to connect to PackTruth AI server. Please check your connection or try again in a moment.' },
       ]);
     } finally {
       setLoading(false);

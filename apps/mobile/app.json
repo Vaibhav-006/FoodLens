@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FoodLens",
-    "slug": "foodlens",
+    "name": "PackTruth",
+    "slug": "packtruth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,13 +11,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#16a34a"
     },
-    "scheme": "foodlens",
+    "scheme": "packtruth",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.foodlens.app",
+      "bundleIdentifier": "com.packtruth.app",
       "infoPlist": {
-        "NSCameraUsageDescription": "FoodLens needs camera access to scan barcodes on food packages.",
-        "NSPhotoLibraryUsageDescription": "FoodLens can scan barcodes from your photo library."
+        "NSCameraUsageDescription": "PackTruth needs camera access to scan barcodes on food packages.",
+        "NSPhotoLibraryUsageDescription": "PackTruth can scan barcodes from your photo library."
       }
     },
     "android": {
@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#16a34a"
       },
-      "package": "com.foodlens.app",
+      "package": "com.packtruth.app",
       "permissions": ["CAMERA"]
     },
     "plugins": [
@@ -33,7 +33,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "FoodLens needs camera access to scan barcodes."
+          "cameraPermission": "PackTruth needs camera access to scan barcodes."
         }
       ]
     ],

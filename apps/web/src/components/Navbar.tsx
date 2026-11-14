@@ -31,7 +31,7 @@ export function Navbar() {
             <Scan className="w-4 h-4 text-white stroke-[2.5]" />
           </div>
           <span className="font-bold text-base sm:text-lg tracking-tight text-white">
-            Food<span className="text-gradient-green">Lens</span>
+            Pack<span className="text-gradient-green">Truth</span>
           </span>
         </Link>
 
