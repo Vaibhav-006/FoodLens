@@ -70,12 +70,12 @@ export default function UserDashboardPage() {
       const stored = localStorage.getItem('foodlens_history');
       if (stored) {
         const parsed = JSON.parse(stored);
-        setHistory(parsed.length > 0 ? parsed : DEFAULT_HISTORY);
+        setHistory(Array.isArray(parsed) ? parsed : []);
       } else {
-        setHistory(DEFAULT_HISTORY);
+        setHistory([]);
       }
     } catch {
-      setHistory(DEFAULT_HISTORY);
+      setHistory([]);
     }
   }, []);
 
@@ -326,44 +326,62 @@ export default function UserDashboardPage() {
           </div>
 
           <div className="space-y-3">
-            {history.slice(0, 5).map((item, idx) => (
-              <Link
-                key={`${item.barcode}-${idx}`}
-                href={`/product/${item.barcode}`}
-                className="glass-card p-4 rounded-2xl border border-[rgba(34,197,94,0.12)] hover:border-emerald-500/40 hover:bg-emerald-500/[0.04] transition-all flex items-center justify-between gap-4 group"
-              >
-                <div className="flex items-center gap-3.5 min-w-0">
-                  <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 border ${
-                      (item.score ?? 50) >= 60
-                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                        : (item.score ?? 50) >= 40
-                        ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-                        : 'bg-red-500/10 text-red-400 border-red-500/30'
-                    }`}
-                  >
-                    {item.score ?? 50}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-white truncate group-hover:text-emerald-300 transition-colors">
-                      {item.name}
-                    </p>
-                    <div className="flex items-center gap-2 text-[11px] text-[#4b7a5e] mt-0.5">
-                      <span>{item.brand || 'Packaged Snack'}</span>
-                      <span>•</span>
-                      <span>{item.scannedAt}</span>
+            {history.length === 0 ? (
+              <div className="glass-card p-6 sm:p-8 rounded-2xl border border-[rgba(34,197,94,0.12)] text-center space-y-2.5">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/20">
+                  <Scan className="w-6 h-6" />
+                </div>
+                <h4 className="text-sm font-bold text-white">No Snacks Scanned Yet</h4>
+                <p className="text-xs text-[#4b7a5e] max-w-sm mx-auto leading-relaxed">
+                  Start scanning barcodes on chips, biscuits, or noodles to decode nutrition and build your personal dietary log.
+                </p>
+                <div className="pt-2">
+                  <Link href="/scan" className="btn-primary inline-flex items-center gap-1.5 text-xs px-4 py-2">
+                    <Scan className="w-3.5 h-3.5" />
+                    Scan Your First Snack
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              history.slice(0, 5).map((item, idx) => (
+                <Link
+                  key={`${item.barcode}-${idx}`}
+                  href={`/product/${item.barcode}`}
+                  className="glass-card p-4 rounded-2xl border border-[rgba(34,197,94,0.12)] hover:border-emerald-500/40 hover:bg-emerald-500/[0.04] transition-all flex items-center justify-between gap-4 group"
+                >
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div
+                      className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 border ${
+                        (item.score ?? 50) >= 60
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                          : (item.score ?? 50) >= 40
+                          ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                          : 'bg-red-500/10 text-red-400 border-red-500/30'
+                      }`}
+                    >
+                      {item.score ?? 50}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-white truncate group-hover:text-emerald-300 transition-colors">
+                        {item.name}
+                      </p>
+                      <div className="flex items-center gap-2 text-[11px] text-[#4b7a5e] mt-0.5">
+                        <span>{item.brand || 'Packaged Snack'}</span>
+                        <span>•</span>
+                        <span>{item.scannedAt}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className="text-[11px] font-semibold text-emerald-400 hidden sm:inline group-hover:underline">
-                    Inspect
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-[#4b7a5e] group-hover:text-emerald-400 transition-colors" />
-                </div>
-              </Link>
-            ))}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className="text-[11px] font-semibold text-emerald-400 hidden sm:inline group-hover:underline">
+                      Inspect
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-[#4b7a5e] group-hover:text-emerald-400 transition-colors" />
+                  </div>
+                </Link>
+              ))
+            )}
           </div>
         </div>
 

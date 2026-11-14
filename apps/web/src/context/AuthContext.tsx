@@ -55,21 +55,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    // 1. Check local demo user session
-    try {
-      const savedDemo = localStorage.getItem(DEMO_USER_KEY);
-      if (savedDemo) {
-        setUser(JSON.parse(savedDemo));
-        setLoading(false);
-        return;
-      }
-    } catch {}
-
-    // 2. Check Supabase auth session if configured
+    // 1. Check Supabase auth session FIRST if configured
     if (isSupabaseConfigured) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session?.user) {
+          try { localStorage.removeItem(DEMO_USER_KEY); } catch {}
           setUser(mapUser(session.user));
+        } else {
+          // If no Supabase session, check if demo user was explicitly saved
+          try {
+            const savedDemo = localStorage.getItem(DEMO_USER_KEY);
+            setUser(savedDemo ? JSON.parse(savedDemo) : null);
+          } catch {
+            setUser(null);
+          }
         }
         setLoading(false);
       });
@@ -77,11 +76,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { data: authListener } = supabase.auth.onAuthStateChange(
         (_event, session) => {
           if (session?.user) {
+            try { localStorage.removeItem(DEMO_USER_KEY); } catch {}
             setUser(mapUser(session.user));
           } else {
-            // Check if demo user is active
-            const savedDemo = localStorage.getItem(DEMO_USER_KEY);
-            setUser(savedDemo ? JSON.parse(savedDemo) : null);
+            try {
+              const savedDemo = localStorage.getItem(DEMO_USER_KEY);
+              setUser(savedDemo ? JSON.parse(savedDemo) : null);
+            } catch {
+              setUser(null);
+            }
           }
           setLoading(false);
         }
@@ -91,6 +94,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         authListener.subscription.unsubscribe();
       };
     } else {
+      // Supabase not configured: fallback to demo if present
+      try {
+        const savedDemo = localStorage.getItem(DEMO_USER_KEY);
+        if (savedDemo) setUser(JSON.parse(savedDemo));
+      } catch {}
       setLoading(false);
     }
   }, []);

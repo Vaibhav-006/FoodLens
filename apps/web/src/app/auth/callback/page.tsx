@@ -29,16 +29,20 @@ export default function AuthCallbackPage() {
         const code = params.get('code');
 
         if (code) {
-          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
           if (error) {
-            console.warn('exchangeCodeForSession error:', error.message);
-            demoSignIn();
+            console.error('exchangeCodeForSession error:', error.message);
+          } else if (data?.session?.user) {
+            try {
+              localStorage.removeItem('foodlens_demo_user');
+            } catch {}
           }
         } else {
-          const { data, error } = await supabase.auth.getSession();
-          if (error || !data.session) {
-            console.warn('No session found in callback, enabling demo profile');
-            demoSignIn();
+          const { data } = await supabase.auth.getSession();
+          if (data?.session?.user) {
+            try {
+              localStorage.removeItem('foodlens_demo_user');
+            } catch {}
           }
         }
 
